@@ -2,8 +2,6 @@ import React from "react"
 import { Formik, Field, Form, ErrorMessage } from "formik"
 import styles from './LoginPage.module.css'
 import logo from '../../assets/img/logo.png'
-//! Валидация паролья на предмет соответствия определенным символам и их количеству
-//! POST запрос через санку на сервер
 
 const LoginPage = () => {
   return (
