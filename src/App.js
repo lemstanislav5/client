@@ -2,8 +2,7 @@ import React from "react"
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom"
 import LoginPage from './componsnts/LoginPage/LoginPage'
 import LayoutLoginPage from "./componsnts/Layouts/LayoutsLoginPage"
@@ -17,8 +16,9 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/">
-          <LayoutLoginPage></LayoutLoginPage>
+          <LayoutLoginPage>
             <LoginPage />
+          </LayoutLoginPage>
         </Route>
       </Switch>
     </Router>
