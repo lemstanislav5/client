@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import styles from './LoginPage.module.css'
-import logo from '../../assets/img/logo.png'
-import { connect } from 'redux'
+import React, { useState } from 'react';
+import styles from './LoginPage.module.css';
+import logo from '../../assets/img/logo.png';
+import { connect } from 'redux';
 
 const LoginPage = () => {
 
@@ -17,30 +17,19 @@ const LoginPage = () => {
 
   const validate = () => {
     const errors = {};
-    if (!state.email) {
-      errors.email = 'Почта не указана'
-    }
-      console.log(/!^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(state.login))
-    if (/!^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(state.login)) {
-
-      errors.login = 'Некорректная почта'
-    }
-
-    const beginWithoutDigit = /^\D.*$/
-    const withoutSpecialChars = /^[^-() /]*$/
-    const containsLetters = /^.*[a-zA-Z]+.*$/
-    const minimum8Chars = /^.{8,}$/
-    const withoutSpaces = /^[\S]$/
+    if (!state.email) errors.email = 'Почта не указана';
+    const validEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (!validEmail.test(state.login)) errors.login = 'Некорректная почта';
     if(!state.password) {
       errors.password = 'Пароль не указан'
-    } else if(!beginWithoutDigit.test(errors.password)) {
-      errors.password += ' | Пароль не имеет заглавных знаков'
-    } else if(!withoutSpecialChars.test(errors.password)) {
-      errors.password += ' | Пароль не имеет специальных символов @#$%ˆ&*()'
-    } else if(!containsLetters.test(errors.password)) {
-      errors.password += ' | '
+    } else {
+      const err = [];
+      if(!/^[a-zA-Z0-9]+$/.test(state.password)) err.push(' Допустимы символы A-z и 0-9.')
+      if(!/^.{8,}$/.test(state.password)) err.push('  Минимальная длина 8 символов.');
+      errors.password = err.join(' ');
     }
-    setState({...state, errors})
+    setState({...state, errors});
+    if (!errors.password && !errors.login) console.log(state.login, state.password);
   }
 
 
@@ -49,7 +38,7 @@ const LoginPage = () => {
       <div>
         <div>
           <img src={logo} alt="" className="form-control"/>
-          <label htmlFor="floatingInput">Логин</label>
+          <label htmlFor="floatingInput">Логин  (email)</label>
           <input
             className="form-control"
             type="email"
@@ -57,17 +46,15 @@ const LoginPage = () => {
             autoComplete="on"
             value={state.login}
             onChange={e => setState({...state, login: e.target.value})}/>
-          <label htmlFor="floatingInput">Пароль</label>
+            { state.errors.login ? <label className="text-danger inline-block w-100" htmlFor="floatingInput">{state.errors.login}</label> : <></> }
+          <label htmlFor="floatingInput">Пароль (8: A-z, 0-9)</label>
           <input
             className="form-control"
             type="password"
             name="password"
             value={state.password}
             onChange={e => setState({...state, password: e.target.value})}/>
-            {
-              state.errors.login ? <label htmlFor="floatingInput">{state.errors.login}</label>
-              : <></>
-            }
+            { state.errors.password ? <label className="text-danger inline-block w-100" htmlFor="floatingInput">{state.errors.password}</label> : <></> }
           <button
             className="mt-2 w-100 btn btn-lg btn-primary"
             type="submit"
