@@ -64,15 +64,15 @@ const LoginPage = () => {
             name="password"
             value={state.password}
             onChange={e => setState({...state, password: e.target.value})}/>
-            {
-              state.errors.login ? <label htmlFor="floatingInput">{state.errors.login}</label>
-              : <></>
+            {  
+              state.errors.login 
+                ? <label htmlFor="floatingInput">{state.errors.login}</label>
+                : <></> 
             }
           <button
             className="mt-2 w-100 btn btn-lg btn-primary"
             type="submit"
-            onClick={validate}
-            >
+            onClick={validate}>
             Войти
           </button>
           <p>
