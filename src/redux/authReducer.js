@@ -1,7 +1,8 @@
-// import {InferActionsTypes} from './redux-store';
+import { api } from '../api/api'
+
 const AUTH = 'AUTH'
 
-export const initialState = {
+const initialState = {
   auth: false,
   user:{
     token: '',
@@ -21,10 +22,10 @@ export const actionAuth = (auth) => {
   return { type: AUTH, auth };
 };
 
-export const optionReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH: {
-      return { ...state, auth };
+      return { ...state, auth: action.auth };
     }
     default: {
       return state;
@@ -32,13 +33,18 @@ export const optionReducer = (state = initialState, action) => {
   }
 };
 
-export const authThunkCreater = (login, password) => async (dispath) => {
-  let res = await setTimeOut(()=>{
-      console.log('Auth:' +  login, password)
-      return 200
-  }, 2000)
+export const authThunkCreator = (login, password) => async (dispath) => {
+  let res = await api.auth({login, password})
+  console.log(res)
   return (dispatch) => {
-    if(res === 200) dispatch(actionAuth(true));
-    if(res != 200) dispatch(actionAuth(false));
+   
   };
 };
+
+// export const getAuthUserData = (): ThunkType => async (dispatch) => {
+//   let meData = await authAPI.me()
+//   if (meData.resultCode === ResultCodesEnum.Success) {
+//       let {id, login, email} = meData.data;
+//       dispatch(actions.setAuthUserData(id, email, login, true))
+//   }
+// }
